@@ -5,6 +5,9 @@
 #OS=OSX
 OS=Linux
 
+GPU=0
+#GPU=1
+
 
 #EN0=en0
 #EN0=enp0s5
@@ -36,18 +39,24 @@ if [ $OS = "OSX" ]
 then
   DOCKER=docker
   XDISP=DISPLAY=$DISPLAY_IP:0  # for OSX
-  WORKDIR=/Users/jschoi/work/Yolo
+  WORKDIR=/Users/jschoi/work/HRI-20069-W3
 else
-  DOCKER=nvidia-docker  
+  if [ $GPU = 1 ]
+  then
+    DOCKER=nvidia-docker  
+  else
+    DOCKER=docker
+  fi
   XDISP="DISPLAY"             # for Linux
-  WORKDIR=/home/jschoi/work/Yolo
+  WORKDIR=/home/jschoi/work/HRI-20069-W3
 fi
 
 #    --env "DISPLAY" \
 #    --env DISPLAY=$DISPLAY_IP:0 \
 #--------------------------------
 
-xhost + $DISPLAY_IP
+#xhost + $DISPLAY_IP
+xhost +
 
 $DOCKER run -it --rm \
     --env $XDISP \

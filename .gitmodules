@@ -1,3 +1,6 @@
 [submodule "darknet"]
 	path = darknet
-	url = https://github.com/AlexeyAB/darknet
+	url = git@github.com:cjs0818/darknet
+[submodule "Yolo_mark"]
+	path = Yolo_mark
+	url = git@github.com:cjs0818/Yolo_mark

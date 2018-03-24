@@ -1,3 +1,7 @@
+# Yolo Homepage
+ Refer to Yolo homepage
+ * https://pjreddie.com/darknet/
+
 # Install Docker
 At first, install Docker to your system
 
@@ -5,51 +9,60 @@ At first, install Docker to your system
 
   * https://www.docker.com/community-edition
 
-* WORKDIR is assummed to be your working directory
-
+# Download Git Repository of our Class
+* **HOMEDIR** is assummed to be your working directory
   ```
-  $ WORKDIR=your_work_directory
-  $ cd $WORKDIR
+  $ HOMEDIR = your_work_directory
   ```
-
-# Download the git repository of our class
+* Download **HRI-20069-W3** repository for this class.
   ```
+  $ cd $HOMEDIR
   $ git clone https://github.com/cjs0818/HRI-20069-W3
   $ cd HRI-20069-W3
+  $ git submodule init
+  $ git submodule update
   ```
   
 
 #  !!! SKIP this because it is already included in HRI-20069-W3 repository !!!  (Download darknet)
+
+ * Download **darknet** in **HRI-20069-W3** directory.
   ```
+  $ cd $HOMEDIR/HRI-20069-W3
   $ git clone https://github.com/AlexeyAB/darknet
   ```
 
 
- * Download yolo weights
+ * Download pre-trained yolo weights
+ ```
+  $ wget https://pjreddie.com/media/files/yolo.weights -P $HOMEDIR/darknet_weights_data
+  $ wget https://pjreddie.com/media/files/yolo-voc.weights -P $HOMEDIR/darknet_weights_data
+  $ wget https://pjreddie.com/media/files/tiny-yolo.weights -P $HOMEDIR/darknet_weights_data
+  $ wget https://pjreddie.com/media/files/yolo9000.weights -P $HOMEDIR/darknet_weights_data
+ ```
 
+
+
+# Download or Build the OpenCV docker image
+ * Download **pristine70/cv_cuda** image
   ```
-  $ wget https://pjreddie.com/media/files/yolo.weights -P ../darknet_weights_data
-  $ wget https://pjreddie.com/media/files/yolo-voc.weights -P ../darknet_weights_data
-  $ wget https://pjreddie.com/media/files/tiny-yolo.weights -P ../darknet_weights_data
-  $ wget https://pjreddie.com/media/files/yolo9000.weights -P ../darknet_weights_data
-  $ wget http://pjreddie.com/media/files/darknet19_448.conv.23 -P ../darknet_weights_data
+  $ docker login
+  $ ~~~~
+  $ ~~~~
+  $ docker pull pristine70/cv_cuda
   ```
-
-
-# Build Docker
-
+ * Or Build the OpenCV docker image.
   ```
   $ ./docker_build.sh
   ```
-  
-* Change DISPLAY_IP in start.sh according to your system (using ifconfig)
+  which will perform ```docker build -t pristine70/cv_cuda```. But because it takes more than 1-hour, the above **Download** (```docker pull pristine70/cv_cuda```) is recommended.
 
-* Change WORKDIR in start.sh according to your system
 
 
 # Start Docker
 
-* Set up parameters such as DOCKER (nvidia-docker or docker), EN0 (ifconfig ...), WORKDIR in the 'start.sh' file
+* Modify ```start.sh```.
+  Set up parameters such as DOCKER (nvidia-docker or docker), EN0 (ifconfig ...), WORKDIR in the ```start.sh``` file
 
   ```
   DOCKER=nvidia-docker
@@ -96,11 +109,12 @@ At first, install Docker to your system
   ```
  ## Arrange the data & configuration files
   * Arrange the followings and modify their contents properly
+  
    * x64/Release/data/img/*.jpg
    * x64/Release/data/obj.data
    * x64/Release/data/obj.names
    * x64/Release/data/train.txt
-  * Perform ```./linux_mark.sh```
+  * Build your own data by performing ```./linux_mark.sh```
    * Draw bounding boxes and select the number of labels, then the resultant data will be generated in which values of x, y, width, height for each pictures are written.
    ```
    x64/Release/data/img/*.txt
@@ -108,42 +122,56 @@ At first, install Docker to your system
 
   * Copy the generated files
    ```
-   $ cp -R x64/Release/data $WORKDIR/HRI-20069-W3/darknet/data_cjs
+   $ cp -R x64/Release/data $HOMEDIR/HRI-20069-W3/darknet/data_cjs
    ```
   * Copy a config file & modify the number of classes and filters.
    ```
-   $ cp x64/Release/yolo-obj.cfg $WORKDIR/HRI-20069-W3/darknet/data_cjs/
-   $ vi $WORKDIR/HRI-20069-W3/darknet/data_cjs/yolo-obj.cfg
+   $ cp x64/Release/yolo-obj.cfg $HOMEDIR/HRI-20069-W3/darknet/data_cjs/
+   ```
+  * Modify ```obj.data``` to point your training data
+   ```
+   $ vi $HOMEDIR/HRI-20069-W3/darknet/data_cjs/obj.data
+   classes = 2
+   train  = data/data_cjs/train.txt
+   valid  = data/data_cjs/train.txt
+   names = data/data_cjs/obj.names
+   backup = backup
+   ```
+  * Modify the ```yolo-obj.cfg``` based on your training data
+   ```
+   $ vi $HOMEDIR/HRI-20069-W3/darknet/data_cjs/yolo-obj.cfg
    ...
    filters = ~~
    classes = ~~
    ...
    ```
    
-   Here, 
-   ```
-   the # of filters = (5 + # of classes) * 5
-   ```
-   For example, if the # of classes = 2, then the # of filters should be 35
+   Here, you should keep the rule of ```the # of filters = (5 + # of classes) * 5```. For example, if the # of classes = 2, then the # of filters should be 35
+   
+ ## Let's Train & Test
+  * Download Pre-trained Convolutional Weights
+  ```
+  $ wget http://pjreddie.com/media/files/darknet19_448.conv.23 -P $HOMEDIR/darknet_weights_data
+  ```   
    
   * Train your data
    Prepare the following ```train.sh``` and execute it.
    ```
-   $ cd $WORKDIR/HRI-20069-W3/darknet
+   $ cd $HOMEDIR/HRI-20069-W3/darknet
    $ vi train.sh
-   $ ./darknet detector train ./data_cjs/obj.data ./data_cjs/yolo-obj.cfg ~/work/darknet_weights_data/darknet19_448.conv.23
+   $ ./darknet detector train ./data_cjs/obj.data ./data_cjs/yolo-obj.cfg $HOMEDIR/darknet_weights_data/darknet19_448.conv.23
    $ ./train.sh
    
    ```
    
-  Then, you will get yolo-obj_*number*.weights in a folder you have setup in the ```data_cjs/obj.data```
+  Then, you will get yolo-obj_*number*.weights in a folder you have setup in the ```data_cjs/obj.data``` such as ```yolo-obj_2200.weights```
 
 
   * Test your data
    * Assuming that you acquired ```yolo-obj_2200.weights```
 
     ```
-    $ cd $WORKDIR/HRI-20069-W3/darknet
+    $ cd $HOMEDIR/HRI-20069-W3/darknet
     $ vi img-voc_cjs.sh
     ./darknet detector test ./data_cjs/obj.data ./data_cjs/yolo-obj.cfg ./backup_cjs/yolo-obj_2200.weights ./data_cjs/img/bird3.jpg
     $ ./img-voc_cjs.sh

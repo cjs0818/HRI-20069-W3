@@ -113,9 +113,10 @@ At first, install Docker to your system
    $ make
   ```
   
-* Run the sample file
+* Run the sample files
   ```
-   $ ./image_voic.sh
+   $ ./image_voc.sh
+   $ ./video_voc.sh
   ```
   
 # Train darknet

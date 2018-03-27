@@ -100,6 +100,24 @@ At first, install Docker to your system
   /root/work/darknet$ ./image_voc.sh
   ```
   
+* Edit Makefile in darknet folder and compile
+  ```
+   $ cd darkinet
+   $ vi Makefile
+     GPU=0
+     CUDNN=0
+     OPENCV=1
+     ...
+     ...
+   $ make clean
+   $ make
+  ```
+  
+* Run the sample file
+  ```
+   $ ./image_voic.sh
+  ```
+  
 # Train darknet
  ## Build data
   * !!! SKIP this because it is already included in HRI-20069-W3 repository !!! (download Yolo_mark)

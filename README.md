@@ -178,11 +178,14 @@ At first, install Docker to your system
   ```   
    
   * Train your data
-   Prepare the following ```train.sh``` and execute it.
+   Prepare the following ```train_cjs.sh``` and execute it in OpenCV docker.
    ```
    $ cd $HOMEDIR/HRI-20069-W3/darknet
    $ vi train_cjs.sh
    $ ./darknet detector train ./data_cjs/obj.data ./data_cjs/yolo-obj.cfg $HOMEDIR/darknet_weights_data/darknet19_448.conv.23
+   $ cd ..
+   $ ./start.sh  # Go inside OpenCV docker
+   $ cd darknet
    $ ./train_cjs.sh
    
    ```

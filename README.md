@@ -32,8 +32,8 @@ At first, install Docker to your system
   $ git clone https://github.com/AlexeyAB/darknet
   ```
 
-
- * Download pre-trained yolo weights
+# Download Yolo Weights
+ * Download pre-trained yolo weights (it can be done easily by ```./get_yolo_weights.sh```)
  ```
   $ wget https://pjreddie.com/media/files/yolo.weights -P $HOMEDIR/darknet_weights_data
   $ wget https://pjreddie.com/media/files/yolo-voc.weights -P $HOMEDIR/darknet_weights_data

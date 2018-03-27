@@ -181,9 +181,9 @@ At first, install Docker to your system
    Prepare the following ```train.sh``` and execute it.
    ```
    $ cd $HOMEDIR/HRI-20069-W3/darknet
-   $ vi train.sh
+   $ vi train_cjs.sh
    $ ./darknet detector train ./data_cjs/obj.data ./data_cjs/yolo-obj.cfg $HOMEDIR/darknet_weights_data/darknet19_448.conv.23
-   $ ./train.sh
+   $ ./train_cjs.sh
    
    ```
    

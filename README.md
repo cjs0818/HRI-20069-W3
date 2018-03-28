@@ -123,7 +123,7 @@ At first, install Docker to your system
  ## Build data
   * !!! SKIP this because it is already included in HRI-20069-W3 repository !!! (download Yolo_mark)
   ```
-  $ cd $HOMEDIR
+  $ cd $HOMEDIR/HRI-20069-W3
   $ git clone https://github.com/AlexeyAB/Yolo_mark
   ```
   
@@ -135,7 +135,7 @@ At first, install Docker to your system
   
   * Run the OpenCV docker
   ```
-  $ cd $HOMEDIR
+  $ cd $HOMEDIR/HRI-20069-W3
   $ ./start.sh
   ```
   
@@ -198,6 +198,7 @@ At first, install Docker to your system
    Prepare the following ```train_cjs.sh``` and execute it in OpenCV docker.
    ```
    $ cd $HOMEDIR/HRI-20069-W3/darknet
+   $ git checkout train_test
    $ vi train_cjs.sh
    $ ./darknet detector train ./data_cjs/obj.data ./data_cjs/yolo-obj.cfg $HOMEDIR/darknet_weights_data/darknet19_448.conv.23
    $ cd ..

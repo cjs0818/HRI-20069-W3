@@ -160,8 +160,15 @@ At first, install Docker to your system
    x64/Release/data/img/*.txt
    ```
 
+  * Before copying the data and generated files, let's checkout to a 'train_test' branch in the darknet.
+  ```
+  $ cd $HOMEDIR/HRI-20069-W3/darknet
+  $ git checkout train_test
+  ```
+
   * Copy the generated files
    ```
+   $ cd $HOMEDIR/HRI-20069-W3/Yolo_mark
    $ cp -R x64/Release/data $HOMEDIR/HRI-20069-W3/darknet/data_cjs
    ```
   * Copy a config file & modify the number of classes and filters.
@@ -198,7 +205,6 @@ At first, install Docker to your system
    Prepare the following ```train_cjs.sh``` and execute it in OpenCV docker.
    ```
    $ cd $HOMEDIR/HRI-20069-W3/darknet
-   $ git checkout train_test
    $ vi train_cjs.sh
    $ ./darknet detector train ./data_cjs/obj.data ./data_cjs/yolo-obj.cfg $HOMEDIR/darknet_weights_data/darknet19_448.conv.23
    $ cd ..

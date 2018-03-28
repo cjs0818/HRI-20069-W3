@@ -123,7 +123,24 @@ At first, install Docker to your system
  ## Build data
   * !!! SKIP this because it is already included in HRI-20069-W3 repository !!! (download Yolo_mark)
   ```
+  $ cd $HOMEDIR
   $ git clone https://github.com/AlexeyAB/Yolo_mark
+  ```
+  
+  * Checkout a new branch (assuming that we already made it. Here it is assumed to be 'dev_cjs')
+  ```
+  $ cd Yolo_mark
+  $ git checkout dev_cjs
+  ```
+  
+  * Run the OpenCV docker
+  ```
+  $ cd $HOMEDIR
+  $ ./start.sh
+  ```
+  
+  * Enter the Yolo_mark folder in the OpenCV docker bash, and compile it.
+  ```
   $ cd Yolo_mark
   $ cmake .
   $ make
